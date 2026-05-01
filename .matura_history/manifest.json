@@ -1,0 +1,18 @@
+{
+    "parent_file": "/home/tomasr/Personal/matura/matura.blend",
+    "versions": [
+        {
+            "id": "autosave",
+            "timestamp": "2026-05-01 01:27:29",
+            "note": "Auto Save",
+            "thumbnail": "autosave/thumbnail.png",
+            "blend": "autosave/snapshot.blend_snapshot",
+            "object_count": 26,
+            "file_size": 879521,
+            "is_protected": false,
+            "tag": "NONE"
+        }
+    ],
+    "schema_version": 1,
+    "project_uuid": "787286c5-2505-4eff-b029-98d2585909af"
+}
