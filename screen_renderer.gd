@@ -1,198 +1,26 @@
 extends Node2D
 
-var plane_001 = {
-	'points': [Vector3(-16.5296, 0.0000, 15.1689), Vector3(15.4704, 0.0000, 15.1689), Vector3(-16.5296, 2.0000, 15.1689), Vector3(15.4704, 2.0000, 15.1689)],
-	'faces': [[0, 1, 3, 2]]
-}
-var plane = {
-	'points': [Vector3(-16.5296, 0.0000, -13.8311), Vector3(15.4704, 0.0000, -13.8311), Vector3(-16.5296, 0.0000, 50.1689), Vector3(15.4704, 0.0000, 50.1689)],
-	'faces': [[0, 1, 3, 2]]
-}
-var ziel_1 = {
-	'points': [Vector3(-0.6988, 0.0030, 21.2529), Vector3(-0.6988, 5.0770, 21.2529), Vector3(-0.6988, 0.0030, 21.5912), Vector3(-0.6988, 5.0770, 21.5912), Vector3(-0.3605, 0.0030, 21.2529), Vector3(-0.3605, 5.0770, 21.2529), Vector3(-0.3605, 0.0030, 21.5912), Vector3(-0.3605, 5.0770, 21.5912), Vector3(-1.5296, 2.8000, 21.0121), Vector3(-1.5296, 4.8000, 21.0121), Vector3(-1.5296, 2.8000, 21.2964), Vector3(-1.5296, 4.8000, 21.2964), Vector3(0.4704, 2.8000, 21.0121), Vector3(0.4704, 4.8000, 21.0121), Vector3(0.4704, 2.8000, 21.2964), Vector3(0.4704, 4.8000, 21.2964), Vector3(-0.5296, 3.8000, 21.0121)],
-	'faces': [[0, 1, 3, 2], [2, 3, 7, 6], [6, 7, 5, 4], [4, 5, 1, 0], [2, 6, 4, 0], [7, 3, 1, 5], [8, 9, 11, 10], [10, 11, 15, 14], [14, 15, 13, 12], [12, 16, 8], [10, 14, 12, 8], [15, 11, 9, 13], [8, 16, 9], [9, 16, 13], [16, 12, 13]]
-}
-var ziel_2 = {
-	'points': [Vector3(-0.6988, 0.0030, 29.1571), Vector3(-0.6988, 5.0770, 29.1571), Vector3(-0.6988, 0.0030, 29.4953), Vector3(-0.6988, 5.0770, 29.4953), Vector3(-0.3605, 0.0030, 29.1571), Vector3(-0.3605, 5.0770, 29.1571), Vector3(-0.3605, 0.0030, 29.4953), Vector3(-0.3605, 5.0770, 29.4953), Vector3(-1.5296, 2.8000, 28.9162), Vector3(-1.5296, 4.8000, 28.9162), Vector3(-1.5296, 2.8000, 29.2006), Vector3(-1.5296, 4.8000, 29.2006), Vector3(0.4704, 2.8000, 28.9162), Vector3(0.4704, 4.8000, 28.9162), Vector3(0.4704, 2.8000, 29.2006), Vector3(0.4704, 4.8000, 29.2006), Vector3(-0.5296, 3.8000, 28.9162)],
-	'faces': [[0, 1, 3, 2], [2, 3, 7, 6], [6, 7, 5, 4], [4, 5, 1, 0], [2, 6, 4, 0], [7, 3, 1, 5], [8, 9, 11, 10], [10, 11, 15, 14], [14, 15, 13, 12], [12, 16, 8], [10, 14, 12, 8], [15, 11, 9, 13], [8, 16, 9], [9, 16, 13], [16, 12, 13]]
-}
-var ziel_3 = {
-	'points': [Vector3(-0.6988, 0.0030, 35.4524), Vector3(-0.6988, 5.0770, 35.4524), Vector3(-0.6988, 0.0030, 35.7907), Vector3(-0.6988, 5.0770, 35.7907), Vector3(-0.3605, 0.0030, 35.4524), Vector3(-0.3605, 5.0770, 35.4524), Vector3(-0.3605, 0.0030, 35.7907), Vector3(-0.3605, 5.0770, 35.7907), Vector3(-1.5296, 2.8000, 35.2116), Vector3(-1.5296, 4.8000, 35.2116), Vector3(-1.5296, 2.8000, 35.4959), Vector3(-1.5296, 4.8000, 35.4959), Vector3(0.4704, 2.8000, 35.2116), Vector3(0.4704, 4.8000, 35.2116), Vector3(0.4704, 2.8000, 35.4959), Vector3(0.4704, 4.8000, 35.4959), Vector3(-0.5296, 3.8000, 35.2116)],
-	'faces': [[0, 1, 3, 2], [2, 3, 7, 6], [6, 7, 5, 4], [4, 5, 1, 0], [2, 6, 4, 0], [7, 3, 1, 5], [8, 9, 11, 10], [10, 11, 15, 14], [14, 15, 13, 12], [12, 16, 8], [10, 14, 12, 8], [15, 11, 9, 13], [8, 16, 9], [9, 16, 13], [16, 12, 13]]
-}
-var ziel_4 = {
-	'points': [Vector3(-0.6988, 0.0030, 40.5056), Vector3(-0.6988, 5.0770, 40.5056), Vector3(-0.6988, 0.0030, 40.8438), Vector3(-0.6988, 5.0770, 40.8438), Vector3(-0.3605, 0.0030, 40.5056), Vector3(-0.3605, 5.0770, 40.5056), Vector3(-0.3605, 0.0030, 40.8438), Vector3(-0.3605, 5.0770, 40.8438), Vector3(-1.5296, 2.8000, 40.2647), Vector3(-1.5296, 4.8000, 40.2647), Vector3(-1.5296, 2.8000, 40.5491), Vector3(-1.5296, 4.8000, 40.5491), Vector3(0.4704, 2.8000, 40.2647), Vector3(0.4704, 4.8000, 40.2647), Vector3(0.4704, 2.8000, 40.5491), Vector3(0.4704, 4.8000, 40.5491), Vector3(-0.5296, 3.8000, 40.2647)],
-	'faces': [[0, 1, 3, 2], [2, 3, 7, 6], [6, 7, 5, 4], [4, 5, 1, 0], [2, 6, 4, 0], [7, 3, 1, 5], [8, 9, 11, 10], [10, 11, 15, 14], [14, 15, 13, 12], [12, 16, 8], [10, 14, 12, 8], [15, 11, 9, 13], [8, 16, 9], [9, 16, 13], [16, 12, 13]]
-}
-var ziel_5 = {
-	'points': [Vector3(-0.8851, 0.0030, 44.9307), Vector3(-0.8851, 5.0770, 44.9307), Vector3(-0.8851, 0.0030, 45.2690), Vector3(-0.8851, 5.0770, 45.2690), Vector3(-0.5468, 0.0030, 44.9307), Vector3(-0.5468, 5.0770, 44.9307), Vector3(-0.5468, 0.0030, 45.2690), Vector3(-0.5468, 5.0770, 45.2690), Vector3(-1.7159, 2.8000, 44.6899), Vector3(-1.7159, 4.8000, 44.6899), Vector3(-1.7159, 2.8000, 44.9743), Vector3(-1.7159, 4.8000, 44.9743), Vector3(0.2841, 2.8000, 44.6899), Vector3(0.2841, 4.8000, 44.6899), Vector3(0.2841, 2.8000, 44.9743), Vector3(0.2841, 4.8000, 44.9743), Vector3(-0.7159, 3.8000, 44.6899)],
-	'faces': [[0, 1, 3, 2], [2, 3, 7, 6], [6, 7, 5, 4], [4, 5, 1, 0], [2, 6, 4, 0], [7, 3, 1, 5], [8, 9, 11, 10], [10, 11, 15, 14], [14, 15, 13, 12], [12, 16, 8], [10, 14, 12, 8], [15, 11, 9, 13], [8, 16, 9], [9, 16, 13], [16, 12, 13]]
-}
-var plane_002 = {
-	'points': [Vector3(-16.5296, 0.0000, -13.8311), Vector3(-16.5296, 9.6000, -13.8311), Vector3(-16.5296, 0.0000, 50.1689), Vector3(-16.5296, 9.6000, 50.1689)],
-	'faces': [[0, 1, 3, 2]]
-}
-var plane_003 = {
-	'points': [Vector3(15.4704, 0.0000, -13.8311), Vector3(15.4704, 9.6000, -13.8311), Vector3(15.4704, 0.0000, 50.1689), Vector3(15.4704, 9.6000, 50.1689)],
-	'faces': [[0, 1, 3, 2]]
-}
-var plane_004 = {
-	'points': [Vector3(-16.5296, 9.5948, -13.8311), Vector3(15.4704, 9.5948, -13.8311), Vector3(-16.5296, 0.0225, -13.8311), Vector3(15.4704, 0.0225, -13.8311)],
-	'faces': [[0, 1, 3, 2]]
-}
-var plane_005 = {
-	'points': [Vector3(-16.5296, 9.5948, 50.1689), Vector3(15.4704, 9.5948, 50.1689), Vector3(-16.5296, 0.0225, 50.1689), Vector3(15.4704, 0.0225, 50.1689)],
-	'faces': [[0, 1, 3, 2]]
-}
-
-var cube_005 = {
-	'points': [Vector3(42.4966, -0.9000, -2.4637), Vector3(42.4966, 0.9000, -2.4637), Vector3(42.4966, -0.9000, 3.5363), Vector3(42.4966, 0.9000, 3.5363), Vector3(48.4966, -0.9000, -2.4637), Vector3(48.4966, 0.9000, -2.4637), Vector3(48.4966, -0.9000, 3.5363), Vector3(48.4966, 0.9000, 3.5363)],
-	'faces': [[0, 1, 3, 2], [2, 3, 7, 6], [6, 7, 5, 4], [4, 5, 1, 0], [2, 6, 4, 0], [7, 3, 1, 5]]
-}
-var cube_006 = {
-	'points': [Vector3(50.4966, 4.1000, 4.5363), Vector3(50.4966, 5.9000, 4.5363), Vector3(50.4966, 4.1000, 10.5363), Vector3(50.4966, 5.9000, 10.5363), Vector3(56.4966, 4.1000, 4.5363), Vector3(56.4966, 5.9000, 4.5363), Vector3(56.4966, 4.1000, 10.5363), Vector3(56.4966, 5.9000, 10.5363)],
-	'faces': [[0, 1, 3, 2], [2, 3, 7, 6], [6, 7, 5, 4], [4, 5, 1, 0], [2, 6, 4, 0], [7, 3, 1, 5]]
-}
-var cube_007 = {
-	'points': [Vector3(43.4966, 7.1000, 12.5363), Vector3(43.4966, 8.9000, 12.5363), Vector3(43.4966, 7.1000, 18.5363), Vector3(43.4966, 8.9000, 18.5363), Vector3(49.4966, 7.1000, 12.5363), Vector3(49.4966, 8.9000, 12.5363), Vector3(49.4966, 7.1000, 18.5363), Vector3(49.4966, 8.9000, 18.5363)],
-	'faces': [[0, 1, 3, 2], [2, 3, 7, 6], [6, 7, 5, 4], [4, 5, 1, 0], [2, 6, 4, 0], [7, 3, 1, 5]]
-}
-var cube_008 = {
-	'points': [Vector3(51.4966, -3.9000, 28.5363), Vector3(51.4966, -2.1000, 28.5363), Vector3(51.4966, -3.9000, 34.5363), Vector3(51.4966, -2.1000, 34.5363), Vector3(57.4966, -3.9000, 28.5363), Vector3(57.4966, -2.1000, 28.5363), Vector3(57.4966, -3.9000, 34.5363), Vector3(57.4966, -2.1000, 34.5363)],
-	'faces': [[0, 1, 3, 2], [2, 3, 7, 6], [6, 7, 5, 4], [4, 5, 1, 0], [2, 6, 4, 0], [7, 3, 1, 5]]
-}
-var cube_009 = {
-	'points': [Vector3(59.4966, -0.9000, 37.5363), Vector3(59.4966, 0.9000, 37.5363), Vector3(59.4966, -0.9000, 43.5363), Vector3(59.4966, 0.9000, 43.5363), Vector3(65.4966, -0.9000, 37.5363), Vector3(65.4966, 0.9000, 37.5363), Vector3(65.4966, -0.9000, 43.5363), Vector3(65.4966, 0.9000, 43.5363)],
-	'faces': [[0, 1, 3, 2], [2, 3, 7, 6], [6, 7, 5, 4], [4, 5, 1, 0], [2, 6, 4, 0], [7, 3, 1, 5]]
-}
-var cube_010 = {
-	'points': [Vector3(57.4966, 1.1000, 48.5363), Vector3(57.4966, 2.9000, 48.5363), Vector3(57.4966, 1.1000, 54.5363), Vector3(57.4966, 2.9000, 54.5363), Vector3(63.4966, 1.1000, 48.5363), Vector3(63.4966, 2.9000, 48.5363), Vector3(63.4966, 1.1000, 54.5363), Vector3(63.4966, 2.9000, 54.5363)],
-	'faces': [[0, 1, 3, 2], [2, 3, 7, 6], [6, 7, 5, 4], [4, 5, 1, 0], [2, 6, 4, 0], [7, 3, 1, 5]]
-}
-var cube_011 = {
-	'points': [Vector3(57.4966, 3.1000, 58.5363), Vector3(57.4966, 4.9000, 58.5363), Vector3(57.4966, 3.1000, 64.5363), Vector3(57.4966, 4.9000, 64.5363), Vector3(63.4966, 3.1000, 58.5363), Vector3(63.4966, 4.9000, 58.5363), Vector3(63.4966, 3.1000, 64.5363), Vector3(63.4966, 4.9000, 64.5363)],
-	'faces': [[0, 1, 3, 2], [2, 3, 7, 6], [6, 7, 5, 4], [4, 5, 1, 0], [2, 6, 4, 0], [7, 3, 1, 5]]
-}
-
-var plane_006 = {
-	'points': [Vector3(100.3144, 9.5948, 38.3112), Vector3(169.6352, 9.5948, 38.3112), Vector3(100.3144, 0.0225, 38.3112), Vector3(169.6352, 0.0225, 38.3112)],
-	'faces': [[0, 1, 3, 2]]
-}
-var plane_007 = {
-	'points': [Vector3(100.3144, 9.5948, -32.7644), Vector3(169.6352, 9.5948, -32.7644), Vector3(100.3144, 0.0225, -32.7644), Vector3(169.6352, 0.0225, -32.7644)],
-	'faces': [[0, 1, 3, 2]]
-}
-var plane_008 = {
-	'points': [Vector3(169.6352, 0.0000, -32.7644), Vector3(169.6352, 9.6000, -32.7644), Vector3(169.6352, 0.0000, 38.3112), Vector3(169.6352, 9.6000, 38.3112)],
-	'faces': [[0, 1, 3, 2]]
-}
-var plane_009 = {
-	'points': [Vector3(100.3144, 0.0000, -32.7644), Vector3(100.3144, 9.6000, -32.7644), Vector3(100.3144, 0.0000, 38.3112), Vector3(100.3144, 9.6000, 38.3112)],
-	'faces': [[0, 1, 3, 2]]
-}
-var plane_010 = {
-	'points': [Vector3(100.3144, 0.0000, -32.7644), Vector3(169.6352, 0.0000, -32.7644), Vector3(100.3144, 0.0000, 38.3112), Vector3(169.6352, 0.0000, 38.3112)],
-	'faces': [[0, 1, 3, 2]]
-}
-
-
-
 var camera_pos = Vector3(0,0,0)
 var camera_rot = Vector2(0,0)
-var arrays_to_render = [[plane_001, plane, ziel_1, ziel_2, ziel_3, ziel_4, ziel_5, plane_002, plane_003, plane_004, plane_005],[cube_005, cube_006, cube_007, cube_008, cube_009, cube_010, cube_011], [plane_006, plane_007, plane_008, plane_009, plane_010]]
-var scene = 1
 var speed = 15
 var sensitivity = 5
 var frame_count = 0
 var fps_sum = 0.0
 var time_passed = 0.0
 
-func _camera_rot_2d():
-	var basis = Basis().rotated(Vector3(0, 1, 0), camera_rot.y) # Rotation der Kamera nach links oder rechts
-	basis = basis.rotated(basis.x, camera_rot.x) # Rotation der Kamera nach oben oder unten
-	return basis
+var current_renderer
 
-func _points_from_cam(points_3d: Array, camera_pos: Vector3) -> Array:
-	var distance_points = []
-	var basis = _camera_rot_2d()
-	var cam_inverse = basis.inverse() # Sicht invertieren (nach links schauen, Sachen bewegen sich nach rechts)
-	for point in points_3d: # Abstand messen von Punkten zur Kamera:
-		var relative_vector = point - camera_pos
-		distance_points.append(cam_inverse * relative_vector)
-	return distance_points
+func _ready():
+	load_renderer("res://wireframe.gd") # Den renderer starten
 
-func _clipping_behind_player(points_array,faces_array):
-	var new_faces = []
-	var new_points_array = points_array.duplicate()
+func load_renderer(script_path: String):
+	if current_renderer:
+		current_renderer.queue_free() # Den alten renderer entfernen
 	
-	for face in faces_array:
-		var all_points_visible = true
-		for i in range(face.size()):
-			if points_array[face[i]].z < 0.1:
-				all_points_visible = false
-		if all_points_visible:
-			new_faces.append(face)
-		else:
-			var result = _calculate_interpolated_points(new_points_array,face)
-			new_points_array = result["points_array"]
-			new_faces.append(result["face"])
-			
-	return {
-	"points_array": new_points_array,
-	"faces_array": new_faces
-	}
+	var RendererScript = load(script_path) # Die Datei laden
+	current_renderer = RendererScript.new() 
 
-func _calculate_interpolated_points(points_array, face):
-	var new_face = []
-	var new_points_array = points_array.duplicate()
-	
-	# Mithilfe des Sutherland-Hodgman Algorithmus wird für jeder Punkt in faces_array mit seinen nächsten Punkt verglichen.
-	# Da des Polygons in einer Richtung ablaufend (von A nach B) angeschaut werden, speichern sichtbare Kanten immer nur den Zielpunkt (B), um doppelte Punkte zu vermeiden.
-	# Volle Erklärung: https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm
-	
-	for i in range(face.size()):
-		var point_a = points_array[face[i]]
-		var point_b = points_array[face[(i + 1) % face.size()]]
-		
-		if point_a.z > 0.1 and point_b.z > 0.1: # Falls beide punkte sichtbar sind, kann man den Punkt B zu new_face hinzugefügt werden
-			new_face.append(face[(i + 1) % face.size()])
-			
-		elif point_a.z > 0.1 and point_b.z < 0.1: # Falls ein der beiden Punkte nicht sichtbar ist
-			# Man berechnet wo man den Polygon schneiden muss, indem man:
-			var t = (0.1 - point_a.z) / (point_b.z - point_a.z) # t: der Prozent Abstand zwischen den Z-Werten Punkt A (0%), B (100%) und den Punkt wo man die Linie nicht mehr sehen kann.
-			var new_point = point_a.lerp(point_b, t) # Die Koordinate des Punktes wo man die Linie nicht mehr sehene kann berechnet,
-			new_points_array.append(new_point) # Den neu berechneten Punkt hinzufügt
-			new_face.append(new_points_array.size() - 1)
-			
-		elif point_a.z < 0.1 and point_b.z > 0.1: # Man macht das gleiche wie beim vorherigen, ausser dass man noch den Punkt B hinzufügen muss.
-			var t = (0.1 - point_a.z) / (point_b.z - point_a.z)
-			var new_point = point_a.lerp(point_b, t)
-			new_points_array.append(new_point)
-			new_face.append(new_points_array.size() - 1)
-			new_face.append(face[(i + 1) % face.size()])
-			
-	return {
-	"points_array": new_points_array,
-	"face": new_face
-	}
-
-func _3d_to_2d(points_3d: Array) -> Array:
-	var converted_points = []
-	for point in points_3d:
-			var x_2d = point.x / point.z
-			var y_2d = -point.y / point.z
-			converted_points.append(Vector2(x_2d, y_2d))
-	return converted_points
-
-
-func _rendered_points(points_array,faces_array,camera_pos):
-	# alle Funktionen auf die Punkte anwenden
-	var result = _clipping_behind_player(_points_from_cam(points_array,camera_pos),faces_array)
-	return {
-		"points_array": _3d_to_2d(result["points_array"]),
-		"faces_array": result["faces_array"]
-	}
-
+	add_child(current_renderer) # Die Datei zur jetzigen Szene hinzufügen
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -208,10 +36,10 @@ func _input(event):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) # Wenn man Esc drückt kann man die Maus wieder Frei bewegen
 	
 	if event.is_action_pressed("ui_accept"):
-		if scene == arrays_to_render.size():
-			scene = 1
+		if current_renderer.scene == current_renderer.arrays_to_render.size():
+			current_renderer.scene = 1
 		else:
-			scene += 1
+			current_renderer.scene += 1
 
 
 func _process(delta):
@@ -220,16 +48,16 @@ func _process(delta):
 	var side = basis.x
 	
 	# Bewegung in x und z:
-	if Input.is_action_pressed("ui_up"):
+	if Input.is_action_pressed("move_forward"):
 		camera_pos.x += forward.x * speed * delta
 		camera_pos.z += forward.z * speed * delta
-	if Input.is_action_pressed("ui_down"):
+	if Input.is_action_pressed("move_backward"):
 		camera_pos.x -= forward.x * speed * delta
 		camera_pos.z -= forward.z * speed * delta
-	if Input.is_action_pressed("ui_left"):
+	if Input.is_action_pressed("move_left"):
 		camera_pos.x -= side.x * speed * delta
 		camera_pos.z -= side.z * speed * delta
-	if Input.is_action_pressed("ui_right"):
+	if Input.is_action_pressed("move_right"):
 		camera_pos.x += side.x * speed * delta
 		camera_pos.z += side.z * speed * delta
 
@@ -245,25 +73,8 @@ func _process(delta):
 		fps_sum = 0
 		frame_count = 0
 	camera_pos.y = clamp(camera_pos.y, 3, 100) # Damit der Spieler nicht über den Boden gehen kann
-	queue_redraw()
-
-func _draw():
-
-	var screen_center = get_viewport_rect().size / 2
-	var scale_amount = 400.0
-	var color = Color(1.0, 1.0, 1.0, 0.5)
-
-	for array in arrays_to_render[scene - 1]:
-		var screen_points = []
-		var points_to_draw = _rendered_points(array['points'], array['faces'], camera_pos)
-		for i in points_to_draw["points_array"]:
-			screen_points.append((i * scale_amount) + screen_center)
-		
-		for i in points_to_draw["faces_array"]:
-			var face_points = []
-			for index in i:
-				face_points.append(screen_points[index])
-
-			if face_points.size() >= 3: # Mindestens drei Vektoren für ein Polygon
-				draw_polygon(face_points, [color])
-				draw_polyline(face_points, color, 1, false)
+	
+	# Die nötigen Variablen den renderer geben, damit er es rendern kann
+	current_renderer.camera_pos = camera_pos
+	current_renderer.camera_rot = camera_rot
+	current_renderer.queue_redraw()
