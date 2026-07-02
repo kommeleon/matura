@@ -7,11 +7,16 @@ var sensitivity = 5
 var frame_count = 0
 var fps_sum = 0.0
 var time_passed = 0.0
+var scene = 1
+
+var renderer = 1
+var renderers = ["res://wireframe.gd", "res://raycast.gd"]
 
 var current_renderer
 
 func _ready():
 	load_renderer("res://wireframe.gd") # Den renderer starten
+
 
 func load_renderer(script_path: String):
 	if current_renderer:
@@ -35,31 +40,35 @@ func _input(event):
 	if event.is_action_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) # Wenn man Esc drückt kann man die Maus wieder Frei bewegen
 	
-	if event.is_action_pressed("ui_accept"):
-		if current_renderer.scene == current_renderer.arrays_to_render.size():
-			current_renderer.scene = 1
+	if event.is_action_pressed("ui_accept"): # Enter für nächste Szene
+		if scene == current_renderer.arrays_to_render.size():
+			scene = 1
 		else:
-			current_renderer.scene += 1
+			scene += 1
+	
+	if event.is_action_pressed("next_renderer"): # Tab für nächten renderer
+		if renderer == renderers.size():
+			renderer = 1
+		else:
+			renderer += 1
+		load_renderer(renderers[renderer-1])
 
 
 func _process(delta):
 	var basis = Basis().rotated(Vector3(0, 1, 0), camera_rot.y) # Rotation der Kamera für Bewegung
 	var forward = basis.z
 	var side = basis.x
+	current_renderer.scene = scene
 	
 	# Bewegung in x und z:
-	if Input.is_action_pressed("move_forward"):
-		camera_pos.x += forward.x * speed * delta
-		camera_pos.z += forward.z * speed * delta
-	if Input.is_action_pressed("move_backward"):
-		camera_pos.x -= forward.x * speed * delta
-		camera_pos.z -= forward.z * speed * delta
-	if Input.is_action_pressed("move_left"):
-		camera_pos.x -= side.x * speed * delta
-		camera_pos.z -= side.z * speed * delta
-	if Input.is_action_pressed("move_right"):
-		camera_pos.x += side.x * speed * delta
-		camera_pos.z += side.z * speed * delta
+	if Input.is_action_pressed("ui_up"):
+		camera_pos += forward * speed * delta
+	if Input.is_action_pressed("ui_down"):
+		camera_pos -= forward * speed * delta
+	if Input.is_action_pressed("ui_left"):
+		camera_pos -= side * speed * delta
+	if Input.is_action_pressed("ui_right"):
+		camera_pos += side * speed * delta
 
 	var current_fps = 1.0 / delta
 	frame_count += 1

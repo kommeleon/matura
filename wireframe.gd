@@ -148,7 +148,7 @@ func _calculate_interpolated_points(points_array, face):
 		var point_a = points_array[face[i]]
 		var point_b = points_array[face[(i + 1) % face.size()]]
 		
-		if point_a.z > 0.1 and point_b.z > 0.1: # Falls beide punkte sichtbar sind, kann man den Punkt B zu new_face hinzugefügt werden
+		if point_a.z > 0.1 and point_b.z > 0.1: # Falls beide Punkte sichtbar sind, kann man den Punkt B zu new_face hinzugefügt werden
 			new_face.append(face[(i + 1) % face.size()])
 			
 		elif point_a.z > 0.1 and point_b.z < 0.1: # Falls ein der beiden Punkte nicht sichtbar ist
