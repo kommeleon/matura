@@ -1,18 +1,18 @@
 {
-    "parent_file": "/home/tomasr/Personal/matura/matura.blend",
+    "parent_file": "/var/home/tomasr/Documents/Git/matura/matura.blend",
     "versions": [
         {
             "id": "autosave",
-            "timestamp": "2026-07-02 13:56:29",
+            "timestamp": "2026-08-15 01:02:43",
             "note": "Auto Save",
             "thumbnail": "autosave/thumbnail.png",
             "blend": "autosave/snapshot.blend_snapshot",
-            "object_count": 25,
-            "file_size": 184102,
+            "object_count": 26,
+            "file_size": 210721,
             "is_protected": false,
             "tag": "NONE"
         }
     ],
     "schema_version": 1,
-    "project_uuid": "787286c5-2505-4eff-b029-98d2585909af"
+    "project_uuid": "05bf182d-265a-4b8a-84bd-98ffffaed58d"
 }

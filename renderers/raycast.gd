@@ -152,7 +152,7 @@ func _calculate_screen_rays(camera_rot, rows, columns):
 
 func _draw():
 	var viewport_size = get_viewport_rect().size
-	var rows = 10
+	var rows = 20
 	var columns = int(rows * 16/9)
 	
 	var cell_width = viewport_size.x / columns

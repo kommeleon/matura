@@ -10,13 +10,12 @@ var time_passed = 0.0
 var scene = 1
 
 var renderer = 1
-var renderers = ["res://wireframe.gd", "res://raycast.gd"]
+var renderers = ["res://renderers/wireframe.gd", "res://renderers/raycast.gd","res://renderers/voxel_rasterizer.gd"]
 
 var current_renderer
 
 func _ready():
-	load_renderer("res://wireframe.gd") # Den renderer starten
-
+	load_renderer(renderers[0]) # Den renderer starten
 
 func load_renderer(script_path: String):
 	if current_renderer:
@@ -70,6 +69,7 @@ func _process(delta):
 	if Input.is_action_pressed("ui_right"):
 		camera_pos += side * speed * delta
 
+	# FPS berechnung
 	var current_fps = 1.0 / delta
 	frame_count += 1
 	fps_sum += current_fps
@@ -81,6 +81,7 @@ func _process(delta):
 		time_passed = 0
 		fps_sum = 0
 		frame_count = 0
+	
 	camera_pos.y = clamp(camera_pos.y, 3, 100) # Damit der Spieler nicht über den Boden gehen kann
 	
 	# Die nötigen Variablen den renderer geben, damit er es rendern kann

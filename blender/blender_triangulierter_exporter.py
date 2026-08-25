@@ -12,27 +12,24 @@ for obj in selected_objects:
     if obj and obj.type == 'MESH':
         mesh = obj.data
         
-        # Force Blender to calculate triangles for the mesh, even if it has quads/n-gons
+        # Force Blender to calculate triangles for the mesh (handles quads/n-gons)
         mesh.calc_loop_triangles()
         
         # Replace '.' with '_' and make the name lowercase
         var_name = obj.name.replace(".", "_").lower()
         var_names.append(var_name)
         
-        # Pull all vertex coordinates once to speed up lookup (Y-Up conversion)
-        all_vertices = [f"Vector3({v.co.x:.4f}, {v.co.z:.4f}, {v.co.y:.4f})" for v in mesh.vertices]
+        # Vertices (Y-Up conversion)
+        points = [f"Vector3({v.co.x:.4f}, {v.co.z:.4f}, {v.co.y:.4f})" for v in mesh.vertices]
         
-        # Loop through the calculated loop_triangles instead of polygons
-        triangles = []
-        for loop_tri in mesh.loop_triangles:
-            v0 = all_vertices[loop_tri.vertices[0]]
-            v1 = all_vertices[loop_tri.vertices[1]]
-            v2 = all_vertices[loop_tri.vertices[2]]
-            
-            triangles.append(f"[{v0}, {v1}, {v2}]")
+        # Extract indices for each calculated triangle
+        triangles = [list(loop_tri.vertices) for loop_tri in mesh.loop_triangles]
 
-        # Format directly as an array
-        output += f"var {var_name} = [\n    " + ",  ".join(triangles) + "\n]\n"
+        # Format as a GDScript Dictionary
+        output += f"var {var_name} = {{\n"
+        output += f"    'points': [{', '.join(points)}],\n"
+        output += f"    'triangles': {triangles}\n"
+        output += "}\n\n"
 
 # Add the final array of all exported variable names at the bottom
 if var_names:
