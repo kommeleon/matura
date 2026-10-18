@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://dlwv3wwjioy0a"
+
+[deps]
+
+files=["res://Exportierte Daten/benchmark_results.Scene.translation", "res://Exportierte Daten/benchmark_results.Time.translation", "res://Exportierte Daten/benchmark_results.FPS.translation"]
+
+source_file="res://Exportierte Daten/benchmark_results.csv"
+dest_files=["res://Exportierte Daten/benchmark_results.Scene.translation", "res://Exportierte Daten/benchmark_results.Time.translation", "res://Exportierte Daten/benchmark_results.FPS.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true
