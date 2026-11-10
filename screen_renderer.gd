@@ -10,7 +10,7 @@ var time_passed = 0.0
 var scene = 0
 
 var renderer = 0
-var renderers = ["res://renderers/wireframe.gd", "res://renderers/raycast.gd","res://renderers/voxel_rasterizer.gd"]
+var renderers = ["res://renderers/wireframe.gd", "res://renderers/raycast.gd","res://renderers/voxel_ray_traversal.gd"]
 
 var current_renderer
 

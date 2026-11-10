@@ -10,17 +10,16 @@
 )
 
 #heading(numbering: none)[Motivation]
-Ich interessiere mich für die Entwicklung von Videospielen und fand schon immer,
-dass man ein Programm nicht richtig versteht bevor man die einzelnen
-Teile analysiert oder sogar selbst programmiert hat.
-Ausserdem hat es mich schon immer gewundert wie ein Computer
-eine dreidimensionale Szene nimmt und sie dann auf zwei
-Dimensionen projizieren kann. 
+Aus Interesse an der Spieleentwicklung war ich schon immer
+der Meinung, ein Programm versteht man erst dann richtig,
+wenn man die einzelnen Teile selbst programmiert hat.
 
-Indem ich lerne wie
-die Sachen funktionieren die ich täglich nutze kann ich selber
-besser mit ihnen arbeiten wenn ich ein Spiel programmiere
-und verstehe was hinter ihnen steckt.
+Ausserdem fasziniert es mich, wie ein Computer
+aus einer dreidimensionalen Szene ein zweidimensionales Bild erzeugt.
+
+Wenn ich verstehe, wie die Werkzeuge hinter meinen täglichen
+Programmen aufgebaut sind, kann ich bei der Entwicklung
+eigener Spiele viel besser und gezielter damit arbeiten.
 
 
 = Einleitung
@@ -83,8 +82,10 @@ Alle drei nutzen verschiedene Datenstrukturen um Objekte auf
 zwei Dimensionen zu projizieren und alle Drei machen das auf
 verschieden Arten.
 
-
-
+== Terminologie
+Die Kamera ist die Augen des Spielers. Die Kamera befindet sich deswegen
+wo der Kopf des Spielers ist. Der Bildschirm ist der physische Bildschirm
+auf den die Szene von der Perspektive der Kamera gezeigt.
 
 
 == Wireframe-Rendering
@@ -97,10 +98,10 @@ beziehungsweise zur Kamera zu berechnen.
 Man macht sie zum Nullpunkt des Raumes und die Position
 der Kamera wird von der Position des Objektes subtrahiert.
 
-Die Kamera blickt zu Beginn entlang der Z-Achse, also in den Richtungsvektor $vec(0,0,1)$
+Die Kamera blickt zu Beginn entlang der $Z$-Achse in $Z$-Richtung, also in den Richtungsvektor $vec(0,0,1)$
 Um die Kamera zu rotieren muss man die zweidimensionale Bewegung
-der Maus in drei Dimensionen umwandeln. 
-Dies geschieht in zwei Schritten:
+der Maus in eine dreidimensional Bewegung umwandeln. 
+Dies geschieht wie folgt:
 
 + Bewegt man die Maus horizontal, wird der Richtungsvektor um die $Y$-Achse
   des Raumes nach links oder rechts rotiert. Dabei verändern sich die
@@ -109,7 +110,7 @@ Dies geschieht in zwei Schritten:
   nach oben oder unten. Dabei verändern sich die $Y$- und $Z$-Komponenten
   des Richtungsvektors.
 
-Da bei beiden Schritten die $Z$-Komponente angepasst wird, lässt sich 
+Da bei beiden Fällen die $Z$-Komponente angepasst wird, lässt sich 
 der Richtungsvektor über diese zwei einfachen Mausbewegungen frei in allen 
 drei Raumdimensionen ausrichten.
 
@@ -124,36 +125,37 @@ bewegt und wenn man nach oben schaut sich alles nach unten
 bewegt. Alle Objekte in der Szene werden dann mit dieser 
 invertierten Matrix multipliziert.
 
-Danach kann man mit dieser Formel diese
-dreidimensionalen Punkte umrechnen:
+Danach kann man mit dieser Formel die
+dreidimensionalen Punkte an den Koordinaten $(x,y,z)$ auf die 
+zweidimensionalen Koordinatenpunkte $(x',y')$ projizieren:
 
 $ x' = x / z wide y' = y / z $ <eq:wireframe>
 
-x' und y' sind dann zweidimensionale Koordinaten die auf dem Bildschirm
+$x'$ und $y'$ sind die zweidimensionale Koordinaten die auf dem Bildschirm
 gezeigt werden können. Das Prinzip der Formel ist die perspektivische
-Umrechnung, man teilt die Koordinaten $x$ und  $y$ durch den Abstand $z$
-Je weiter ein Objekt ist, desto grösser ist $z$ und das Ergebnis wird kleiner,
-also erscheinen Objekte die weiter weg sind kleiner.
+Umrechnung, man teilt die Koordinaten $x$ und  $y$ durch den Abstand $z$.
+Je weiter ein Objekt von der Kamera ist, desto grösser ist $z$ und desto 
+kleiner sind $x'$ und $y'$, also erscheinen Objekte die weiter weg sind kleiner.
 
 Da $x'$ und $y'$ Werte im Bereich von $-1$ bis $+1$ liefern, müssen sie 
 abschliessend auf die tatsächliche Fensterauflösung skaliert und um die 
 halbe Bildschirmbreite beziehungsweise Bildschirmhöhe verschoben werden, um den 
-Mittelpunkt des Monitors zu treffen. Erst danach verbindet Godots 
+Mittelpunkt des Bildschirms zu treffen. Erst danach verbindet Godots 
 Zeichenfunktion `draw_polyline()` die berechneten Pixelpunkte.
 
 Es gibt aber zwei Fälle, bei denen die Formeln nicht funktionieren:
 
-- Wenn ein Objekt hinter dem Spieler erschient, zum Beispiel falls
-  es $(1,1,-1)$ hinter dem Spieler ist, dann wird nach Anwendung
+- Wenn ein Objekt hinter dem Spieler erschient, falls zum Beispiel
+  das Objekt am Koordinatenpunkt $(1,1,-1)$ hinter dem Spieler liegt, dann wird nach Anwendung
   der Formel das Objekt auf den Bildschirm bei den Koordinaten $(-1,-1)$
-  sein. Das heisst das Objekte mit negativem $Z$-Wert, also Objekte hinter dem Spieler,
+  projiziert. Das heisst das Objekte mit negativem $Z$-Wert, also Objekte hinter dem Spieler,
   invertiert auf dem Bildschirm gezeigt werden.
 - Ein Objekt kann nicht die $Z$-Koordinate $0$ haben, da eine Division
   durch 0 nie möglich ist
 
 Um diese Probleme zu lösen, überprüft das Programm zuerst ob alle Eckpunkte
-eines Objektes hinter dem Spieler sind oder vor dem Spieler.
-Wie schon vorher erwähnt blickt die Kamera in die relative $Z$-Richtung,
+eines Objektes hinter dem Spieler sind oder vor dem Spieler liegen.
+Wie schon vorher erwähnt blickt die Kamera in die $Z$-Richtung,
 dass bedeutet das alle Punkte mit positiven $Z$-Wert vor den Spieler
 und alle Punkte mit negativen $Z$-Wert hinter den Spieler sind.
 Daraus lässt sich kurz vor der Kamera eine Schnittebene definieren, 
@@ -162,12 +164,12 @@ Sie verhindert, dass Punkte mit $Z lt.eq 0$ überhaupt in die Projektionsformel 
 
 Falls nicht alle Eckpunkte vor oder hinter dem Spieler sind, also gemischt
 sind, dann müssen alle Flächen des Objekts entlang der Near-Clipping-Plane so "geschnitten" werden,
-dass es keine Eckpunkte mehr hinter dem Spieler gibt. Dieser Vorgang heisst "clipping". 
-Der Sutherland-Hodgman-Algorithmus @sutherland-hodgman ist dazu gemacht um mit 
-den Flächen eines Objektes genau das zu machen.
+dass es keine Eckpunkte mehr hinter dem Spieler gibt. Dieser Vorgang heisst "Clipping". 
+Der Sutherland-Hodgman-Algorithmus @sutherland-hodgman führt das Clipping mit 
+den Flächen eines Objektes durch und geht dabei wir folgt vor:.
 
-Der Sutherland-Hodgman-Algorithmus geht alle Ecken einer Fläche durch
-und vergleicht sie mit der nächsten Ecke. Dabei wird eine Ecke immer als $B$ und die 
+Er geht alle Ecken einer Fläche durch
+und vergleicht sie mit der nächsten Ecke. Dabei wird die aktuelle Ecke immer als $B$ und die 
 nächste als $A$ bezeichnet. Es gibt vier mögliche Fälle:
 
 - Falls $A$ und $B$ sichtbar sind, dann wird $B$ gespeichert.
@@ -200,14 +202,16 @@ nächste als $A$ bezeichnet. Es gibt vier mögliche Fälle:
 
 == Raycasting
 Der Begriff Raycasting leitet sich aus dem Englischen ab und bedeutet das
-aussenden von Strahlen. Für jedes Pixel auf dem Bildschirm sendet
-der Algorithmus einen Strahl aus um zu sehen, wie weit ein Objekt vom Spieler ist.
+Aussenden von Strahlen. Für jedes Pixel auf dem Bildschirm sendet
+der Algorithmus, von der Kamera aus, einen Strahl der jede  um zu sehen wie weit ein Objekt vom Spieler ist.
 
 Dafür muss ein Strahl mit seiner Richtung *$arrow(d)$* als Vektor und seinen Ursprung *$o$*
-als Koordinate definiert werden. Beide werden in Formeln später gebraucht. 
+als Koordinate definiert werden. Beide werden in Formeln später gebraucht.
+$ s: o + t * arrow(d) $
 
-Der Ursprung des Strahles ist die
-derzeitige Position der Kamera. 
+$t$ ist immer positiv 
+
+Der Ursprung des Strahles ist die aktuelle Position der Kamera. 
 
 Die Richtung des Strahles wird berechnet,
 indem man die vier Ecken des Bildschirmes als Vektoren definiert, diese 
@@ -294,9 +298,7 @@ einen Strahl für jeden Pixel des Bildschirms aus. Jedoch nutzt er nicht
 Dreiecke, sondern sogenannte volumetrische Pixels oder Voxels.
 Um also diesen Algorithmus zu nutzen muss
 man entweder alle Objekte von Anfang an als Voxels haben oder
-eine Szene zuerst in Voxels verwandeln.
-
-(Voxelizer Erklärung hier)
+eine Szene zuerst in Voxels umwandeln.
 
 Anstatt dass jeder ausgesendete Strahl bei allen Dreiecken der Szene 
 überprüft ob es ein Dreieck trifft und dann berechnet wie weit das getroffene
@@ -324,6 +326,9 @@ Dies wird mit der Formel
 $ Delta x = abs(1 / arrow(d_x)) quad Delta y = abs(1 / arrow(d_y)) quad Delta z = abs(1 / arrow(d_z))$
 berechnet.
 
+Danach wird für die $x$, $y$ und $z$-Koordinate geschaut, ob sie in die positive
+oder negative Richtung gehen.
+
 (restliche Erklärung fehlt noch)
 
 
@@ -347,13 +352,6 @@ Jedes Mal, wenn ein neuer Frame erzeugt wird, ruft Godot automatisch die Funktio
 `process(delta)` auf. Alle Bewegungen, die zwischen den Frames berechnet werden, 
 werden mit delta multipliziert, da die Zeit (in diesem Fall delta) mal die 
 Geschwindigkeit gleich die Strecke ist.
-
-In Godot stösst man dabei auf ein Problem, da Godot bei extrem niedrigen
-Bildwiederholraten unter 7 den delta Wert deckelt, damit die Physik-Engine
-nicht instabil wird. Daher muss man bei Renderern die weniger als 7 FPS
-haben, den Zeitunterschied zwischen Frames mithilfe der Funktion
-`Time.get_ticks_usec()` messen, die einem die vergangene Zeit mit der System-Uhr
-gibt.
 
 Der Vergleich zwischen den Raycasting und Voxel-Ray-Traversal ist schwierig,
 da man Algorithmen die ein Strahl pro Pixel nutzen nie fair mit etwas wie
@@ -422,13 +420,25 @@ den Renderern, da alle den gleichen Ablauf rendern müssen.
 = Ergebnisse
 In den folgenden drei Diagrammen ist die gemessene Bildwiederholrate (FPS) 
 auf einer logarithmischen Skala über die Zeit (in Sekunden) für alle drei 
-Szenen dargestellt. Dabei entspricht Scene_0 der ersten Szene (Raum mit Zielscheiben), 
-Scene_1 der zweiten Szene (schwebende Quader) und Scene_2 der dritten Szene (komplexe Objekte).
+Szenen dargestellt. Dabei entspricht @Szene_1 der ersten Szene (Raum mit Zielscheiben), 
+@Szene_2 der zweiten Szene (schwebende Quader) und @Szene_3 der dritten Szene (komplexe Objekte).
 
 
-#image("Szene 1.svg")
-#image("Szene 2.svg")
-#image("Szene 3.svg")
+#figure(
+  image("Szene 1.svg", width: 100%),
+  caption: [Alle Renderer in einem logarithmischen Diagramm für die erste Szene],
+) <Szene_1>
+
+#figure(
+  image("Szene 2.svg", width: 100%),
+  caption: [Alle Renderer in einem logarithmischen Diagramm für die zweite Szene],
+) <Szene_2>
+
+#figure(
+  image("Szene 3.svg", width: 100%),
+  caption: [Alle Renderer in einem logarithmischen Diagramm für die dritte Szene],
+) <Szene_3>
+
 
 = Interpretation
 == Vergleichende Analyse der Algorithmen
@@ -444,6 +454,23 @@ bis sie ein Voxel treffen. Deswegen hatte es die beste Leistung in
 einem geschlossen Raum, während es in der zweiten Szene, die sehr offen ist, die schlechteste
 Leistung zeigt und sogar schlechter als Raycasting ist. Die Strahlen müssen weit reisen bis sie
 die maximale Anzahl an Schritte erreichen und aufgeben.
+
+Angesichts der Messergebnisse stellt sich die Frage, weshalb rechenintensive Verfahren
+wie Raycasting oder Voxel-Ray-Traversal überhaupt in Betracht gezogen werden, wenn das
+Wireframe-Rendering um ein Vielfaches performanter ist. Der entscheidende Nachteil des
+reinen Wireframe-Renderings liegt jedoch in seiner Darstellungsform: Es projiziert
+lediglich die Kanten von Objekten und erzeugt ein durchsichtiges Drahtgittermodell ohne
+Verdeckung von anderen Objekten. Strahlenbasierte Verfahren hingegen liefern für jedes 
+Pixel exakte Rauminformation über die getroffene Oberfläche. 
+
+Zudem basiert 
+die mathematische Schnittpunktberechnung des Raycastings (wie der Möller-Trumbore-
+Algorithmus) auf demselben Prinzip, das in Spiel-Engines für die physikalische
+Kollisionsabfrage verwendet wird, beispielsweise um Bahnen von Projektilen (auch als 
+Hitscan bekannt) zu berechnen oder den Bodenabstand einer Spielfigur zu ermitteln. 
+In der Praxis werden solche Techniken daher oft kombiniert, die visuelle 
+Geometrie wird mit Wireframe gerendert, während Raycasting für die Interaktion 
+mit der Spielwelt zuständig ist
 
 == Limitationen der Godot Implementierung
 Beim Vergleich der FPS-Werte gibt es Limitationen bei der Implementierung die

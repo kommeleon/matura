@@ -128,8 +128,7 @@
   // Inhaltsverzeichnis
   outline(title: "Inhaltsverzeichnis", depth: 3, indent: auto)
   
-  // Dein gewünschter Abstand
-  v(1000pt)
+  pagebreak()
   
   // Setzt die unsichtbare Markierung für den Hauptteil und startet den Zähler
   [#metadata("main_start") <main_start>]
