@@ -25,6 +25,8 @@ var benchmark_results = {}
 var recording_time = 0.0
 var playback_time = 0.0
 var time_since_last_sample = 0.0
+var benchmark_warmup_frames = 0
+var sample_timestamps = []
 
 var last_time_usec = 0
 
@@ -222,16 +224,32 @@ func start_benchmark():
 	playback_index = 0
 	playback_time = 0.0
 	time_since_last_sample = 0.0
+	benchmark_warmup_frames = 3
+	sample_timestamps.clear()
 	benchmark_results.clear()
+	
+	# Startposition und Szene von Frame 0 sofort setzen
+	var first_frame = recorded_frames[0]
+	camera_pos = Vector3(first_frame["px"], first_frame["py"], first_frame["pz"])
+	camera_rot = Vector2(first_frame["rx"], first_frame["ry"])
+	scene = int(first_frame["sc"])
 	
 	# Ersten Renderer einschalten
 	renderer = benchmark_renderer_index
 	load_renderer(renderers[benchmark_renderer_index])
 	
-	# FIX: Systemuhr direkt nach dem Ladevorgang zurücksetzen, damit kein riesiges true_delta entsteht!
 	last_time_usec = Time.get_ticks_usec()
 
 func process_benchmark(true_delta):
+	# Warmup-Frames abwarten, bis der neue Renderer gezeichnet hat und keine
+	# Lade-/Shader-Ruckler (> 0.15s) mehr auftreten, bevor playback_time startet
+	if benchmark_warmup_frames > 0:
+		benchmark_warmup_frames -= 1
+		if true_delta > 0.15 and benchmark_warmup_frames == 0:
+			benchmark_warmup_frames = 1
+		last_time_usec = Time.get_ticks_usec()
+		return
+	
 	playback_time += true_delta
 	time_since_last_sample += true_delta
 	
@@ -261,13 +279,24 @@ func process_benchmark(true_delta):
 			lerp(frame_a["rx"], frame_b["rx"], weight),
 			lerp(frame_a["ry"], frame_b["ry"], weight)
 		)
-		scene = int(frame_a["sc"])
+		var new_scene = int(frame_a["sc"])
+		if new_scene != scene:
+			sample_timestamps.clear()
+		scene = new_scene
+		
+		# 0.5s-Zeitfenster für stabile FPS-Werte
+		sample_timestamps.append(playback_time)
+		while sample_timestamps.size() > 1 and (playback_time - sample_timestamps[0]) > 0.5:
+			sample_timestamps.pop_front()
 
-		# FPS des aktuellen Frames abspeichern mit Zeitstempel
-		# Limitiert auf max. 20 Datenpunkte pro Sekunde, ansonsten wird die
-		# Datei zu gross.
+		# FPS des aktuellen 0.5s-Fensters alle 0.05s abspeichern
 		if time_since_last_sample >= 0.05:
 			time_since_last_sample = 0.0
+			var avg_fps = 1.0 / true_delta
+			if sample_timestamps.size() >= 2:
+				var window_duration = playback_time - sample_timestamps[0]
+				if window_duration > 0.0:
+					avg_fps = (sample_timestamps.size() - 1) / window_duration
 			
 			# Name des Renderers speichern
 			var r_name = renderers[benchmark_renderer_index].get_file()
@@ -278,10 +307,10 @@ func process_benchmark(true_delta):
 			if not benchmark_results[r_name].has(s_name):
 				benchmark_results[r_name][s_name] = []
 				
-			# Speichere die Zeit und die FPS
+			# Speichere die Zeit und die Durchschnitts-FPS
 			benchmark_results[r_name][s_name].append({
 				"time": snapped(playback_time, 0.001), 
-				"fps": snapped(1.0 / true_delta, 0.1)
+				"fps": snapped(avg_fps, 0.1)
 			})
 		
 	else:
@@ -291,10 +320,18 @@ func process_benchmark(true_delta):
 			playback_index = 0
 			playback_time = 0.0
 			time_since_last_sample = 0.0
+			benchmark_warmup_frames = 3
+			sample_timestamps.clear()
+			
+			# Szene und Kamera sofort auf Frame 0 zurücksetzen, bevor der neue Renderer zeichnet
+			var first_frame = recorded_frames[0]
+			camera_pos = Vector3(first_frame["px"], first_frame["py"], first_frame["pz"])
+			camera_rot = Vector2(first_frame["rx"], first_frame["ry"])
+			scene = int(first_frame["sc"])
+			
 			renderer = benchmark_renderer_index
 			load_renderer(renderers[benchmark_renderer_index])
 			
-			# Systemuhr direkt nach dem Ladevorgang zurücksetzen, damit Godot Zeit hat um die Renderer zu laden.
 			last_time_usec = Time.get_ticks_usec()
 		else:
 			export_benchmark_results()

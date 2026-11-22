@@ -5,11 +5,12 @@
   class: "Klasse",
   advisor: "Name der Betreuungsperson",
   date: "Zürich, Monat Jahr",
+  online-abgabe: false,
   body,
 ) = {
   set document(
     title: title,
-    author: author,
+    author: if online-abgabe { () } else { author },
   )
   // --- Typography & Paragraph Setup ---
   set text(
@@ -57,6 +58,10 @@
   show figure.where(kind: image): set figure.caption(position: bottom)
   set figure(numbering: "1")
 
+  // --- Online-Abgabe: Bilder ausblenden ---
+  show image: it => if online-abgabe { none } else { it }
+  show figure.where(kind: image): it => if online-abgabe { none } else { it }
+
   // --- Quotes / Citations ---
   show quote.where(block: true): it => pad(
     x: 1.5cm,
@@ -78,7 +83,7 @@
       
       if is-main {
         text(9pt, fill: luma(100))[
-          #author | #title
+          #if online-abgabe { title } else { [#author | #title] }
           #v(-0.4em)
           #line(length: 100%, stroke: 0.5pt + luma(150))
         ]
@@ -102,7 +107,8 @@
     #text(13pt, weight: "regular")[Maturitätsarbeit an der Kantonsschule Zürich Nord]
     
     #v(4.5cm)
-    #text(22pt, weight: "bold")[#title]
+    #set par(justify: false)
+    #text(22pt, weight: "bold", hyphenate: false)[#title]
     #if subtitle != none {
       v(0.5em)
       text(14pt, style: "italic")[#subtitle]
@@ -110,16 +116,27 @@
     
     #v(6cm)
     #align(center)[
-      #grid(
-        columns: (auto, auto),
-        row-gutter: 1.2em,
-        column-gutter: 2.5em,
-        align: (left, left),
-        [Verfasser/in:], [#strong(author)],
-        [Klasse:], [#class],
-        [Betreuungsperson:], [#advisor],
-        [Abgabedatum:], [#date],
-      )
+      #if online-abgabe {
+        grid(
+          columns: (auto, auto),
+          row-gutter: 1.2em,
+          column-gutter: 2.5em,
+          align: (left, left),
+          [Klasse:], [#class],
+          [Abgabedatum:], [#date],
+        )
+      } else {
+        grid(
+          columns: (auto, auto),
+          row-gutter: 1.2em,
+          column-gutter: 2.5em,
+          align: (left, left),
+          [Verfasser:], [#strong(author)],
+          [Klasse:], [#class],
+          [Betreuungsperson:], [#advisor],
+          [Abgabedatum:], [#date],
+        )
+      }
     ]
   ]
 
@@ -135,4 +152,14 @@
   counter(page).update(1)
 
   body
+
+  if not online-abgabe {
+    pagebreak()
+    heading(numbering: none)[Abbildungsverzeichnis]
+    outline(
+      title: none,
+      target: figure.where(kind: image),
+    )
+  }
+}
 }
